@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { Schedule } from "./schedule/schedule.entity";
+import { ScheduleModule } from "./schedule/schedule.module";
 
 @Module({
   imports: [
@@ -20,11 +22,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [],
+        entities: [
+          Schedule
+        ],
         synchronize: configService.get<string>('NODE_ENV') === 'DEV',
       }),
     }),
-
+    ScheduleModule
   ],
   controllers: [AppController],
   providers: [AppService],
