@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Schedule } from './schedule.entity';
+import { TripSearch } from './trip-search.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Schedule])],
+  imports: [TypeOrmModule.forFeature([TripSearch])],
   controllers: [],
   providers: [],
 })
-export class ScheduleModule {}
+export class TripSearchModule {}
