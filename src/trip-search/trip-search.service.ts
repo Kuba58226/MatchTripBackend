@@ -23,8 +23,6 @@ export class TripSearchService {
   async create(createTripSearchDto: CreateTripSearchDto): Promise<TripSearch> {
     const { date, origin, destination } = createTripSearchDto;
 
-    console.log(date);
-
     const matchDate = new Date(date);
 
     const dateOut = new Date(matchDate);
@@ -63,13 +61,26 @@ export class TripSearchService {
     try {
       const response = await axios.get(url);
 
-      const trip = this.tripSearchRepository.create({
-        date: new Date("2026-05-13"),
+      console.log(response.data.trips[0].dates[1].flights[0].regularFare.fares[0].amount);
+
+      const existingTrip = await this.tripSearchRepository.findOne({
+        where: { date: matchDate, origin, destination },
+      });
+
+      if (existingTrip) {
+        existingTrip.flightPrice = 90.00;
+        existingTrip.flightPriceCurrency = 'EUR';
+        return await this.tripSearchRepository.save(existingTrip);
+      } else {
+      const newTrip = this.tripSearchRepository.create({
+        date,
+        origin,
+        destination,
         flightPrice: 99.99,
         flightPriceCurrency: 'EUR',
       });
-
-      return this.tripSearchRepository.save(trip);
+      return await this.tripSearchRepository.save(newTrip);
+    }
 
     } catch (error) {
       throw new HttpException('Błąd podczas pobierania danych z Ryanair', HttpStatus.BAD_GATEWAY);
