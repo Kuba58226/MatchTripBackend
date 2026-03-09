@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post } from '@nestjs/common';
 import { TripSearchService } from './trip-search.service';
 import { TripSearch } from './trip-search.entity';
+import { CreateTripSearchDto } from './dto/create-trip-search.dto';
 
 @Controller('trip-search')
 export class TripSearchController {
@@ -14,5 +15,10 @@ export class TripSearchController {
   @Get(':id')
   getOne(@Param('id') id: string): Promise<TripSearch | null> {
     return this.tripSearchService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createTripSearchDto: CreateTripSearchDto): Promise<TripSearch> {
+    return this.tripSearchService.create(createTripSearchDto);
   }
 }
