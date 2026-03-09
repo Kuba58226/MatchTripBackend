@@ -21,9 +21,44 @@ export class TripSearchService {
   }
 
   async create(createTripSearchDto: CreateTripSearchDto): Promise<TripSearch> {
-    const { date, returnDate, origin, destination } = createTripSearchDto;
+    const { date, origin, destination } = createTripSearchDto;
 
-    const url = `https://www.ryanair.com/api/booking/v4/pl-pl/availability?ADT=1&TEEN=0&CHD=0&INF=0&Origin=BER&Destination=MAD&promoCode=&IncludeConnectingFlights=false&DateOut=2026-05-13&DateIn=2026-05-15&FlexDaysBeforeOut=2&FlexDaysOut=2&FlexDaysBeforeIn=2&FlexDaysIn=2&RoundTrip=true&IncludePrimeFares=false&ToUs=AGREED`;
+    console.log(date);
+
+    const matchDate = new Date(date);
+
+    const dateOut = new Date(matchDate);
+    dateOut.setDate(matchDate.getDate() - 2);
+
+    const dateIn = new Date(matchDate);
+    dateIn.setDate(matchDate.getDate() + 2);
+
+    const flexBeforeOut = 2;
+    const flexAfterOut = 1;
+    const flexBeforeIn = 1;
+    const flexAfterIn = 2;
+
+    const params = new URLSearchParams({
+      ADT: '1',
+      TEEN: '0',
+      CHD: '0',
+      INF: '0',
+      Origin: origin,
+      Destination: destination,
+      promoCode: '',
+      IncludeConnectingFlights: 'false',
+      DateOut: dateOut.toISOString().split('T')[0],
+      DateIn: dateIn.toISOString().split('T')[0],
+      FlexDaysBeforeOut: flexBeforeOut.toString(),
+      FlexDaysOut: flexAfterOut.toString(),
+      FlexDaysBeforeIn: flexBeforeIn.toString(),
+      FlexDaysIn: flexAfterIn.toString(),
+      RoundTrip: 'true',
+      IncludePrimeFares: 'false',
+      ToUs: 'AGREED',
+    });
+
+    const url = `https://www.ryanair.com/api/booking/v4/pl-pl/availability?${params}`;
 
     try {
       const response = await axios.get(url);

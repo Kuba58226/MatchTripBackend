@@ -1,6 +1,12 @@
+import { IsString, IsDateString } from 'class-validator';
+
 export class CreateTripSearchDto {
-  date: Date;
-  returnDate?: string;
+  @IsDateString()
+  date: string;
+
+  @IsString()
   origin: string;
+
+  @IsString()
   destination: string;
 }
