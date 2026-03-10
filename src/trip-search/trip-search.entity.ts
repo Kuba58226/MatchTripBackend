@@ -16,7 +16,10 @@ export class TripSearch {
   destination: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  flightPrice: number;
+  outboundFlightPrice: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  returnFlightPrice: number;
 
   @Column({ type: 'varchar', length: 10 })
   flightPriceCurrency: string;

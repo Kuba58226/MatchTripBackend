@@ -61,23 +61,31 @@ export class TripSearchService {
     try {
       const response = await axios.get(url);
 
-      console.log(response.data.trips[0].dates[1].flights[0].regularFare.fares[0].amount);
+      const outboundTrip = response.data.trips[0];
+      const returnTrip   = response.data.trips[1];
+
+      const currency = response.data.currency;
+
+      const cheapestOutbound = this.findCheapestFlight(outboundTrip);
+      const cheapestReturn   = this.findCheapestFlight(returnTrip);
 
       const existingTrip = await this.tripSearchRepository.findOne({
         where: { date: matchDate, origin, destination },
       });
 
       if (existingTrip) {
-        existingTrip.flightPrice = 90.00;
-        existingTrip.flightPriceCurrency = 'EUR';
+        existingTrip.outboundFlightPrice = cheapestOutbound;
+        existingTrip.returnFlightPrice = cheapestReturn;
+        existingTrip.flightPriceCurrency = currency;
         return await this.tripSearchRepository.save(existingTrip);
       } else {
       const newTrip = this.tripSearchRepository.create({
         date,
         origin,
         destination,
-        flightPrice: 99.99,
-        flightPriceCurrency: 'EUR',
+        outboundFlightPrice: cheapestOutbound,
+        returnFlightPrice: cheapestReturn,
+        flightPriceCurrency: currency,
       });
       return await this.tripSearchRepository.save(newTrip);
     }
@@ -85,5 +93,20 @@ export class TripSearchService {
     } catch (error) {
       throw new HttpException('Błąd podczas pobierania danych z Ryanair', HttpStatus.BAD_GATEWAY);
     }
+  }
+
+  findCheapestFlight(trip: any): number {
+    let cheapest = Infinity ;
+
+    for (const date of trip.dates) {
+      for (const flight of date.flights) {
+        const amount = flight.regularFare.fares[0].amount;
+        if (amount < cheapest) {
+          cheapest = amount;
+        }
+      }
+    }
+
+    return cheapest;
   }
 }
