@@ -7,6 +7,7 @@ import { Schedule } from "./schedule/schedule.entity";
 import { ScheduleModule } from "./schedule/schedule.module";
 import { TripSearch } from './trip-search/trip-search.entity';
 import { TripSearchModule } from './trip-search/trip-search.module';
+import { Club } from './club/club.entity';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TripSearchModule } from './trip-search/trip-search.module';
         entities: [
           Schedule,
           TripSearch,
+          Club,
         ],
         synchronize: configService.get<string>('NODE_ENV') === 'DEV',
       }),

@@ -79,17 +79,16 @@ export class TripSearchService {
         existingTrip.flightPriceCurrency = currency;
         return await this.tripSearchRepository.save(existingTrip);
       } else {
-      const newTrip = this.tripSearchRepository.create({
-        date,
-        origin,
-        destination,
-        outboundFlightPrice: cheapestOutbound,
-        returnFlightPrice: cheapestReturn,
-        flightPriceCurrency: currency,
-      });
-      return await this.tripSearchRepository.save(newTrip);
-    }
-
+        const newTrip = this.tripSearchRepository.create({
+          date,
+          origin,
+          destination,
+          outboundFlightPrice: cheapestOutbound,
+          returnFlightPrice: cheapestReturn,
+          flightPriceCurrency: currency,
+        });
+        return await this.tripSearchRepository.save(newTrip);
+      }
     } catch (error) {
       throw new HttpException('Błąd podczas pobierania danych z Ryanair', HttpStatus.BAD_GATEWAY);
     }

@@ -1,12 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Club } from 'src/club/club.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'schedules' })
 export class Schedule {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  homeTeam: string;
+  @ManyToOne(() => Club, (club) => club.schedules)
+  @JoinColumn({ name: 'clubId' })
+  homeTeam: Club;
 
   @Column({ type: 'varchar', length: 255 })
   awayTeam: string;
