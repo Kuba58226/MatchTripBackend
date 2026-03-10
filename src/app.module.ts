@@ -8,6 +8,7 @@ import { ScheduleModule } from "./schedule/schedule.module";
 import { TripSearch } from './trip-search/trip-search.entity';
 import { TripSearchModule } from './trip-search/trip-search.module';
 import { Club } from './club/club.entity';
+import { ClubModule } from './club/club.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { Club } from './club/club.entity';
     }),
     ScheduleModule,
     TripSearchModule,
+    ClubModule,
   ],
   controllers: [AppController],
   providers: [AppService],
