@@ -9,8 +9,8 @@ export class Club {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
-  logoUrl?: string;
+  @Column({ type: 'varchar', length: 500 })
+  logoUrl: string;
 
   @OneToMany(() => Schedule, (schedule) => schedule.homeTeam)
   schedules: Schedule[];
