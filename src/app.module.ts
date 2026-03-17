@@ -9,6 +9,12 @@ import { TripSearch } from './trip-search/trip-search.entity';
 import { TripSearchModule } from './trip-search/trip-search.module';
 import { Club } from './club/club.entity';
 import { ClubModule } from './club/club.module';
+import { AirportModule } from './airport/airport.module';
+import { Airport } from './airport/airport.entity';
+import { Route } from './route/route.entity';
+import { RouteModule } from './route/route.module';
+import { City } from './city/city.entity';
+import { CityModule } from './city/city.module';
 
 @Module({
   imports: [
@@ -30,6 +36,9 @@ import { ClubModule } from './club/club.module';
           Schedule,
           TripSearch,
           Club,
+          Airport,
+          Route,
+          City,
         ],
         synchronize: configService.get<string>('NODE_ENV') === 'DEV',
       }),
@@ -37,6 +46,9 @@ import { ClubModule } from './club/club.module';
     ScheduleModule,
     TripSearchModule,
     ClubModule,
+    AirportModule,
+    RouteModule,
+    CityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
