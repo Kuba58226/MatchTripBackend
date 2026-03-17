@@ -10,4 +10,9 @@ export class ClubController {
   getAll(): Promise<Club[]> {
     return this.clubService.findAll();
   }
+
+  @Get(':clubId/airports')
+  async getAirports(@Param('clubId') clubId: string) {
+    return this.clubService.getCityAirportsAndIncomingRoutes(clubId);
+  }
 }
